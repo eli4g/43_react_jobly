@@ -16,6 +16,7 @@ class JoblyApi {
 
   static async request(endpoint, data = {}, method = "get") {
     console.debug("API Call:", endpoint, data, method);
+    //console.log("API Call:", endpoint, data, method);
 
     //there are multiple ways to pass an authorization token, this is how you pass it in the header.
     //this has been provided to show you another way to pass the token. you are only expected to read this code for this project.
@@ -24,6 +25,7 @@ class JoblyApi {
     const params = (method === "get")
         ? data
         : {};
+        //console.log("API Call Params:",params);
 
     try {
       return (await axios({ url, method, data, params, headers })).data;
@@ -41,10 +43,69 @@ class JoblyApi {
   static async getCompany(handle) {
     
     let res = await this.request(`companies/${handle}`);
+
     return res.company;
   }
 
-  // obviously, you'll add a lot here ...
+  
+  /** Get list of all companies. */
+
+  static async getCompanies() {
+    
+    let res = await this.request(`companies/`);
+   
+    return res;
+  }
+
+      /** Get details of a job by the id. */
+
+      static async getJob(id) {
+    
+        let res = await this.request(`jobs/${id}`);
+       
+        return res;
+      }
+  
+
+
+    /** Get list of all jobs. */
+
+    static async getJobs() {
+    
+      let res = await this.request(`jobs/`);
+     
+      return res;
+    }
+
+
+     /** Register a new user */
+    static async register(newUser) {
+    
+      let res = await this.request(`auth/register/`, newUser, 'post');
+     
+      return res;
+    }
+
+      /** Login a user and return the token*/
+      static async login(user) {
+
+      let res = await this.request(`auth/token/`, user, 'post');
+      
+      return res;
+    }
+
+
+
+      /** Get details of a user by the username. */
+
+      static async getUser(username) {
+
+        let res = await this.request(`users/${username}`, {params: {username: username}});
+        
+        return res;
+      }
+
+
 }
 
 // for now, put token ("testuser" / "password" on class)
